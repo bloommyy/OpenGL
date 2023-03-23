@@ -112,12 +112,12 @@ namespace Utils
 
 	//-------------------------------------------------------------------
 
-	std::pair<int, int> Window::GetSize() const
+	glm::vec2 Window::GetSize() const
 	{
 		int width = 0;
 		int height = 0;
 		glfwGetWindowSize(window, &width, &height);
-		return std::make_pair(width, height);
+		return glm::vec2(width, height);
 	}
 
 	//-------------------------------------------------------------------

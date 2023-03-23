@@ -3,7 +3,7 @@
 //-------------------------------------------------------------------
 
 #include <exception>
-#include <utility>
+#include <glm/glm.hpp>
 
 //-------------------------------------------------------------------
 
@@ -45,6 +45,6 @@ namespace Utils
 		void SetShouldClose(bool value) const;
 
 		[[nodiscard]] float GetElapsedTime() const;
-		std::pair<int, int> GetSize() const;
+		[[nodiscard]] glm::vec2 GetSize() const;
 	};
 }
