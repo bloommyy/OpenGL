@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{81b86507-1d9b-471d-9ec3-8cdf60fa413d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Applications">
+      <UniqueIdentifier>{a6fe9d1c-f1c7-462c-bf15-30f4ecb949f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{47a51d5c-87d5-4147-9701-076aca2bceb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{b87d3531-1f24-4d1c-a5c5-bf9373fee9a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content">
+      <UniqueIdentifier>{9663d5f5-d5fc-492e-9152-32f66870fa96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Shaders">
+      <UniqueIdentifier>{063a18e3-6ec1-4d50-b6d9-5697d2a1ce1e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Input\InputManager.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Window.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Applications\Application_GettingStarted.cpp">
+      <Filter>Applications</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ShaderProgram.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\deps\src\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\deps\src\stb_image.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\VertexAttributeContainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\VertexBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ElementBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\VertexArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Input\InputManager.hpp">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Window.hpp">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Applications\IApplication.hpp">
+      <Filter>Applications</Filter>
+    </ClInclude>
+    <ClInclude Include="Applications\Application_GettingStarted.hpp">
+      <Filter>Applications</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ShaderProgram.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\MouseButtons.hpp" />
+    <ClInclude Include="Input\Keys.hpp" />
+    <ClInclude Include="Graphics\VertexAttributeContainer.hpp" />
+    <ClInclude Include="Graphics\VertexBuffer.hpp" />
+    <ClInclude Include="Graphics\ElementBuffer.hpp" />
+    <ClInclude Include="Graphics\VertexArray.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Shaders\getting_started.frag">
+      <Filter>Content\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\getting_started.vert">
+      <Filter>Content\Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Content\Textures\container.jpg" />
+    <Image Include="Content\Textures\awesomeface.png" />
+  </ItemGroup>
+</Project>
