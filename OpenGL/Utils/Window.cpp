@@ -82,6 +82,8 @@ namespace Utils
 	{
 		glfwSetWindowUserPointer(window, app);
 
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
 		glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
 		glfwSetKeyCallback(window, KeyCallback);
 		glfwSetMouseButtonCallback(window, MouseButtonCallback);

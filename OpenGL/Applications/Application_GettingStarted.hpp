@@ -10,6 +10,7 @@
 #include "../Utils/Window.hpp"
 #include "../Graphics/ShaderProgram.hpp"
 #include "../Graphics/VertexArray.hpp"
+#include "../Utils/Camera3D.hpp"
 
 //-------------------------------------------------------------------
 
@@ -24,13 +25,14 @@ namespace Applications
 		Input::InputManager inputManager;
 
 		std::unique_ptr<Utils::Window> window;
+		std::unique_ptr<Utils::Camera3D> camera;
 		std::unique_ptr<Graphics::ShaderProgram> shader;
 		std::unique_ptr<Graphics::VertexArray> va;
 
 		void Initialize();
 		void LoadContent();
 		void UnloadContent();
-		void Update();
+		void Update(float deltaTime);
 		void Render() const;
 
 	public:

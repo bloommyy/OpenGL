@@ -10,6 +10,9 @@
 
 #include <iostream>
 
+#include "wtypes.h"
+using namespace std;
+
 //-------------------------------------------------------------------
 
 namespace Applications
@@ -17,7 +20,18 @@ namespace Applications
 	Application_GettingStarted::Application_GettingStarted()
 		: boxTexture(0), faceTexture(0)
 	{
-		window = std::make_unique<Utils::Window>("LearnOpenGL", 800, 600);
+		RECT desktop;
+		// Get a handle to the desktop window
+		const auto hDesktop = GetDesktopWindow();
+		// Get the size of screen to the variable desktop
+		GetWindowRect(hDesktop, &desktop);
+		// The top left corner will have coordinates (0,0)
+		// and the bottom right corner will have coordinates
+		// (horizontal, vertical)
+		auto horizontal = desktop.right;
+		auto vertical = desktop.bottom;
+
+		window = std::make_unique<Utils::Window>("LearnOpenGL", horizontal, vertical);
 	}
 
 	//-------------------------------------------------------------------
@@ -27,10 +41,16 @@ namespace Applications
 		Initialize();
 		LoadContent();
 
+		auto lastFrame = 0.0f; // Time of last frame
+
 		// Render loop, each iteration is a frame
 		while (!window->GetShouldClose())
 		{
-			Update();
+			const auto currentFrame = window->GetElapsedTime();
+			const auto deltaTime = currentFrame - lastFrame; // Time between frames
+			lastFrame = currentFrame;
+
+			Update(deltaTime);
 			Render();
 
 			window->SwapBuffers();
@@ -45,6 +65,7 @@ namespace Applications
 	void Application_GettingStarted::Initialize()
 	{
 		window->ActivateInputFor(this);
+		camera = std::make_unique<Utils::Camera3D>(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), 45.0f);
 
 		stbi_set_flip_vertically_on_load(true);
 
@@ -223,7 +244,7 @@ namespace Applications
 
 	//-------------------------------------------------------------------
 
-	void Application_GettingStarted::Update()
+	void Application_GettingStarted::Update(float deltaTime)
 	{
 		if (inputManager.IsKeyDown(Input::Keys::ESCAPE))
 			window->SetShouldClose(true);
@@ -232,13 +253,14 @@ namespace Applications
 		//const auto greenValue = sin(timeValue) / 2.0f + 0.5f;
 		//const auto redValue = sin(timeValue) / 2.0f + 2.0f;
 		//const auto vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
-
 		//if (vertexColorLocation != -1)
 		//{
 		//	glUseProgram(shaderProgram);
 		//	glUniform4f(vertexColorLocation, /*redValue*/0.0f, greenValue, 0.0f, 1.0f);
 		//	glUseProgram(0);
 		//}
+
+		camera->Update(deltaTime, inputManager);
 
 		inputManager.ResetState();
 	}
@@ -273,13 +295,12 @@ namespace Applications
 			glm::vec3(-1.3f, 1.0f, -1.5f)
 		};
 
-		auto view = glm::mat4(1.0f);
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+		auto view = camera->GetViewMatrix();
 
 		const auto windowSize = window->GetSize();
 
 		const auto projection = glm::perspective(
-			glm::radians(45.0f), windowSize.x / windowSize.y, 0.1f, 100.0f);
+			glm::radians(camera->GetZoom()), windowSize.x / windowSize.y, 0.1f, 100.0f);
 
 		shader->SetMat4f("view", view);
 		shader->SetMat4f("projection", projection);

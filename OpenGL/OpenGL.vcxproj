@@ -119,6 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,6 +150,7 @@
     <ClCompile Include="..\deps\src\glad.c" />
     <ClCompile Include="..\deps\src\stb_image.c" />
     <ClCompile Include="Applications\Application_GettingStarted.cpp" />
+    <ClCompile Include="Utils\Camera3D.cpp" />
     <ClCompile Include="Graphics\ElementBuffer.cpp" />
     <ClCompile Include="Graphics\ShaderProgram.cpp" />
     <ClCompile Include="Input\InputManager.cpp" />
@@ -161,6 +163,7 @@
   <ItemGroup>
     <ClInclude Include="Applications\Application_GettingStarted.hpp" />
     <ClInclude Include="Applications\IApplication.hpp" />
+    <ClInclude Include="Utils\Camera3D.hpp" />
     <ClInclude Include="Graphics\ElementBuffer.hpp" />
     <ClInclude Include="Graphics\ShaderProgram.hpp" />
     <ClInclude Include="Input\InputManager.hpp" />

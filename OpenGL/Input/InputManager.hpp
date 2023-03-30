@@ -3,7 +3,7 @@
 //-------------------------------------------------------------------
 
 #include <unordered_map>
-#include <utility>
+#include <glm/glm.hpp>
 
 //-------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ namespace Input
 		std::unordered_map<Keys, bool> keyMap;
 		std::unordered_map<MouseButtons, bool> buttonMap;
 
-		std::pair<float, float> cursorPosition = std::make_pair(0.0f, 0.0f);
+		glm::vec2 cursorPosition = glm::vec2(0.0f, 0.0f);
 		float scrollValue = 0;
 
 	public:
@@ -37,11 +37,11 @@ namespace Input
 
 		void SetCursorPosition(const float x, const float y)
 		{
-			cursorPosition.first = x;
-			cursorPosition.second = y;
+			cursorPosition.x = x;
+			cursorPosition.y = y;
 		}
 
-		[[nodiscard]] std::pair<float, float> GetCursorPosition() const
+		[[nodiscard]] glm::vec2 GetCursorPosition() const
 		{
 			return cursorPosition;
 		}
