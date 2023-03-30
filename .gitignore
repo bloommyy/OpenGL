@@ -1,10 +1,4 @@
 
 .vs/
 OpenGL/x64/Debug
-.vs/OpenGL/v16/.suo
-.vs/OpenGL/v16/Browse.VC.db
-.vs/OpenGL/v16/ipch/AutoPCH/2d8211bd3cef6b65/SOURCE.ipch
-.vs/OpenGL/v16/ipch/AutoPCH/573901fd174eec29/APPLICATION_GETTINGSTARTED.ipch
-.vs/OpenGL/v16/ipch/AutoPCH/5a967009d84382c3/WINDOW.ipch
-x64/Debug/OpenGL.exe
-x64/Debug/OpenGL.pdb
+x64/Debug
