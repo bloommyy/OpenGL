@@ -1,12 +1,12 @@
 #include <iostream>
 
-#include "Applications/Application_GettingStarted.hpp"
+#include "Applications/Application_Lighting.hpp"
 
 int main()
 {
     try
     {
-        Applications::Application_GettingStarted app;
+        Applications::Application_Lighting app;
 
         app.Run();
 

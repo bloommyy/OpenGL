@@ -150,6 +150,7 @@
     <ClCompile Include="..\deps\src\glad.c" />
     <ClCompile Include="..\deps\src\stb_image.c" />
     <ClCompile Include="Applications\Application_GettingStarted.cpp" />
+    <ClCompile Include="Applications\Application_Lighting.cpp" />
     <ClCompile Include="Utils\Camera3D.cpp" />
     <ClCompile Include="Graphics\ElementBuffer.cpp" />
     <ClCompile Include="Graphics\ShaderProgram.cpp" />
@@ -162,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Applications\Application_GettingStarted.hpp" />
+    <ClInclude Include="Applications\Application_Lighting.hpp" />
     <ClInclude Include="Applications\IApplication.hpp" />
     <ClInclude Include="Utils\Camera3D.hpp" />
     <ClInclude Include="Graphics\ElementBuffer.hpp" />
@@ -177,6 +179,10 @@
   <ItemGroup>
     <None Include="Content\Shaders\getting_started.frag" />
     <None Include="Content\Shaders\getting_started.vert" />
+    <None Include="Content\Shaders\lighting.frag" />
+    <None Include="Content\Shaders\lighting.vert" />
+    <None Include="Content\Shaders\light_box.frag" />
+    <None Include="Content\Shaders\light_box.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Content\Textures\awesomeface.png" />
