@@ -8,7 +8,7 @@
 namespace Applications
 {
 	Application_Lighting::Application_Lighting()
-		: lightPos(1.2f, 1.0f, 1.0f)
+		: lightPos(1.2f, 1.0f, 1.0f), boxDiffuseMap(0), boxSpecularMap(0), boxEmissionMap(0)
 	{
 		window = std::make_unique<Utils::Window>("TU.CG.Lab", 800, 600);
 	}
@@ -50,6 +50,99 @@ namespace Applications
 
 	void Application_Lighting::LoadContent()
 	{
+		//
+		// -- Textures
+		//
+
+		glGenTextures(1, &boxDiffuseMap);
+		glBindTexture(GL_TEXTURE_2D, boxDiffuseMap);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		int width, height, channels;
+		std::string texturePath = "Content/Textures/container2.png";
+		auto data = stbi_load(texturePath.c_str(), &width, &height, &channels, 0);
+
+		if (data)
+		{
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
+				GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+			glGenerateMipmap(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
+		else
+		{
+			std::string errorMessage = "Failed to load texture: ";
+			errorMessage.append(texturePath);
+			throw std::exception(errorMessage.c_str());
+		}
+
+		stbi_image_free(data);
+
+		glGenTextures(1, &boxEmissionMap);
+		glBindTexture(GL_TEXTURE_2D, boxEmissionMap);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		texturePath = "Content/Textures/matrix.jpg";
+		data = stbi_load(texturePath.c_str(), &width, &height, &channels, 0);
+
+		if (data)
+		{
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0,
+				GL_RGB, GL_UNSIGNED_BYTE, data);
+
+			glGenerateMipmap(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
+		else
+		{
+			std::string errorMessage = "Failed to load texture: ";
+			errorMessage.append(texturePath);
+			throw std::exception(errorMessage.c_str());
+		}
+
+		stbi_image_free(data);
+
+		glGenTextures(1, &boxSpecularMap);
+		glBindTexture(GL_TEXTURE_2D, boxSpecularMap);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		texturePath = "Content/Textures/container2_specular.png";
+		data = stbi_load(texturePath.c_str(), &width, &height, &channels, 0);
+
+		if (data)
+		{
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
+				GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+			glGenerateMipmap(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
+		else
+		{
+			std::string errorMessage = "Failed to load texture: ";
+			errorMessage.append(texturePath);
+			throw std::exception(errorMessage.c_str());
+		}
+
+		stbi_image_free(data);
+
+		//
+		// -- Buffers
+		//
+
 		constexpr float lightVertices[] =
 		{
 			// positions
@@ -96,49 +189,50 @@ namespace Applications
 			-0.5f,  0.5f, -0.5f,
 		};
 
-	float vertices[] = {
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		constexpr float vertices[] = {
+			// positions          // normals           // texture coords
+			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+			 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
+			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+			-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
 
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+			 0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
+			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+			-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
 
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+			-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+			-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
 
-		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+			 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+			 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
 
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+			 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
+			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
 
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
-	};
+			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
+			 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
+			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+			-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
+			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
+		};
 
 		lightVa = std::make_unique<Graphics::VertexArray>();
 
@@ -160,7 +254,8 @@ namespace Applications
 
 		objectVb->SetAttributes({
 			{"aPos", Graphics::VertexAttributeType::VEC3F},
-			{"aNormal", Graphics::VertexAttributeType::VEC3F} });
+			{"aNormal", Graphics::VertexAttributeType::VEC3F},
+			{"aTexCoords", Graphics::VertexAttributeType::VEC2F} });
 
 		objectVa->SetVertexBuffer(std::move(objectVb));
 
@@ -178,15 +273,24 @@ namespace Applications
 
 		objectShader->Use();
 
-		objectShader->SetVec3f("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
-		objectShader->SetVec3f("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-		objectShader->SetVec3f("lightPos", lightPos);
+		objectShader->SetInt("material.diffuse", 0);
+		objectShader->SetInt("material.specular", 1);
+		objectShader->SetInt("material.emission", 2);
+		objectShader->SetFloat("material.shininess", 32.0f);
+		objectShader->SetVec3f("light.position", lightPos);
+		objectShader->SetVec3f("light.ambient", glm::vec3(0.2f));
+		objectShader->SetVec3f("light.diffuse", glm::vec3(0.5f));
+		objectShader->SetVec3f("light.specular", glm::vec3(1.0f));
 
 		objectShader->Unuse();
 	}
 
 	void Application_Lighting::UnloadContent()
 	{
+		glDeleteTextures(1, &boxDiffuseMap);
+		glDeleteTextures(1, &boxSpecularMap);
+		glDeleteTextures(1, &boxEmissionMap);
+
 		objectVa = nullptr;
 		objectShader = nullptr;
 		lightVa = nullptr;
@@ -221,6 +325,15 @@ namespace Applications
 
 		objectShader->Use();
 		objectVa->Bind();
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, boxDiffuseMap);
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, boxSpecularMap);
+
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, boxEmissionMap);
 
 		objectShader->SetMat4f("model", model);
 		objectShader->SetMat4f("view", view);

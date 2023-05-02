@@ -14,6 +14,9 @@ namespace Applications
 	class Application_Lighting : public IApplication
 	{
 		glm::vec3 lightPos;
+		unsigned boxDiffuseMap;
+		unsigned boxSpecularMap;
+		unsigned boxEmissionMap;
 
 		protected:
 			Input::InputManager inputManager;

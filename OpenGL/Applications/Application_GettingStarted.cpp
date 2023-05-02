@@ -275,6 +275,7 @@ namespace Applications
 		//Begin draw
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, boxTexture);
+
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, faceTexture);
 
